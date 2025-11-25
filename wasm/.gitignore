@@ -1,0 +1,14 @@
+# Go build artifacts
+*.wasm
+wasm_exec.js
+
+# Temporary build directories
+/dist
+/build
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Go module cache (usually unnecessary to ignore but optional)
+# /vendor
