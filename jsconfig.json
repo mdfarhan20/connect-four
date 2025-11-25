@@ -23,7 +23,15 @@
      * Typecheck JS in `.svelte` and `.js` files by default.
      * Disable this if you'd like to use dynamic types.
      */
-    "checkJs": true
+    "checkJs": true,
+    /**
+     * Add path alias from src directory
+     */
+    "baseUrl": ".",
+    "paths": {
+      // Map '@/*' to the 'src/*' directory
+      "@/*": ["./src/*"]
+    }
   },
   /**
    * Use global.d.ts instead of compilerOptions.types
