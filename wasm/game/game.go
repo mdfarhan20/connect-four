@@ -23,6 +23,11 @@ func NewGame() *Game {
 }
 
 
+func (g Game) GetBoard() Board {
+	return g.board
+} 
+
+
 func (g *Game) MakeMove(col int) error {
 	if g.cellCount[col] >= Height {
 		return fmt.Errorf("column is full")
