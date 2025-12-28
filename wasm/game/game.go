@@ -75,5 +75,9 @@ func (g *Game) Winner() Cell {
 
 
 func (g Game) isDraw() bool {
-	return g.moves == (Height * Width)
+	if g.winner != Empty {
+		return false
+	}
+
+	return g.moves == (Height * Width) && g.Winner() != Empty
 }
