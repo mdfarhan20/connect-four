@@ -11,6 +11,8 @@ Connect Four game with AI opponent using minimax algorithm.
     - `game.go` - Game state, move handling, win detection
     - `bot.go` - Minimax algorithm for AI moves
     - `utils.go` - Helper functions
+  - `tests/` - Test files
+    - `utils_test.go` - Tests for utils functions
 - `src/` - React + Vite + TypeScript UI (planned)
 
 ## Go Module
@@ -18,14 +20,25 @@ Connect Four game with AI opponent using minimax algorithm.
 - Packages: `game`
 
 ## Build Commands
-- `cd wasm && go build -o game.wasm` (requires WASM target)
+- `go build -o game.wasm` (requires WASM target)
 - TinyGo recommended: `tinygo build -o game.wasm -target wasm ./...`
+
+## Test Commands
+- `go test ./...` - Run all tests
+- `go test -v ./...` - Verbose output
+- `go test -v -run TestName ./...` - Run specific test
 
 ## Bot Architecture
 - **Algorithm**: Minimax (no alpha-beta pruning yet)
 - **Board**: 6 rows x 7 columns
 - **Cells**: `Empty(0)`, `Red(1)`, `Yellow(2)`
 - **Function**: `FindBestMove(g Game) int`
+
+## Testing Conventions
+- **Test file location**: `wasm/tests/` directory
+- **Test file naming**: `<filename>_test.go`
+- **Package**: `package game` (to access unexported functions)
+- **Test organization**: Use `t.Run()` subtests for multiple cases
 
 ## Future
 - React + Vite + TypeScript UI

@@ -25,7 +25,7 @@ func NewGame() *Game {
 
 func (g Game) GetBoard() Board {
 	return g.board
-} 
+}
 
 
 func (g *Game) MakeMove(col int) error {

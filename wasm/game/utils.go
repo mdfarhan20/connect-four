@@ -12,7 +12,7 @@ func CustomGameBoard(b Board) *Game {
 			if cell != Empty {
 				// Updating column cell count and maxCellHeight
 				game.cellCount[i]++
-				if game.maxCellHeight > game.cellCount[i] {
+				if game.maxCellHeight < game.cellCount[i] {
 					game.maxCellHeight = game.cellCount[i]
 				}
 
@@ -73,7 +73,7 @@ func exploreDirection(board Board, point Point, direction Direction) bool {
 			return true
 		}
 
-		return explore(point.Move(direction))
+		return explore(p.Move(direction))
  	}
 
 	return explore(point)
