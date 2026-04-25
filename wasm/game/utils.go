@@ -1,5 +1,7 @@
 package game
 
+import "fmt"
+
 
 // Creates a custom game from a board
 func CustomGameBoard(b Board) *Game {
@@ -10,26 +12,22 @@ func CustomGameBoard(b Board) *Game {
 	for _, row := range game.board {
 		for i, cell := range row {
 			if cell != Empty {
-				// Updating column cell count and maxCellHeight
 				game.cellCount[i]++
 				if game.maxCellHeight < game.cellCount[i] {
 					game.maxCellHeight = game.cellCount[i]
 				}
 
-				// Updating total game moves
 				game.moves++
 			}
 		}
 	}
 
-	// Updating the current player
 	if game.moves % 2 == 0 {
 		game.currentPlayer = Red
 	} else {
 		game.currentPlayer = Yellow
 	}
 
-	// Checking for game winner
 	game.Winner()
 
 	return game
@@ -45,7 +43,6 @@ func getPossibleDirections(board Board, point Point) []Direction {
 	for _, direction := range directions {
 		newPosition := point.Move(direction)
 
-		// If new position is invalid or the cell in that point is not the same
 		if !newPosition.isValid() || board[newPosition.X][newPosition.Y] != cell {
 			continue
 		}
@@ -90,29 +87,49 @@ func nextPlayer(c Cell) Cell {
 }
 
 
-// Returns the total moves made in a board
-// func getTotalMoves(b Board) int {
-// 	var moves int
+const (
+	reset  = "\033[0m"
+	red    = "\033[31m"
+	yellow = "\033[33m"
+)
 
-// 	for _, row := range b {
-// 		for _, cell := range row {
-// 			if cell != Empty {
-// 				moves++
-// 			}
-// 		} 
-// 	}
+func cellToSymbol(c Cell) string {
+	switch c {
+	case Red:
+		return red + "●" + reset
+	case Yellow:
+		return yellow + "●" + reset
+	default:
+		return "·"
+	}
+}
 
-// 	return moves
-// }
 
+func PrintBoard(g Game) {
+	board := g.board
 
-// Returns the current player to move from a given board
-// func currentPlayer(b Board) Cell {
-// 	moves := getTotalMoves(b)
+	fmt.Println("  0   1   2   3   4   5   6")
+	fmt.Println("┌───┬───┬───┬───┬───┬───┬───┐")
 
-// 	if moves % 2 == 0 {
-// 		return Red
-// 	} 
+	for i := 0; i < Height; i++ {
+		fmt.Print("│")
+		for j := 0; j < Width; j++ {
+			fmt.Print(" " + cellToSymbol(board[i][j]) + " │")
+		}
+		fmt.Println()
 
-// 	return Yellow
-// }
+		if i < Height-1 {
+			fmt.Println("├───┼───┼───┼───┼───┼───┼───┤")
+		}
+	}
+
+	fmt.Println("└───┴───┴───┴───┴───┴───┴───┘")
+
+	if g.winner != Empty {
+		fmt.Printf("Winner: %s\n", cellToSymbol(g.winner))
+	} else if g.isDraw() {
+		fmt.Println("Draw!")
+	} else {
+		fmt.Printf("Current player: %s\n", cellToSymbol(g.currentPlayer))
+	}
+}

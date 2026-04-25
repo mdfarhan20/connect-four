@@ -54,7 +54,7 @@ func actions(g Game) []int {
 	moves := []int{}
 
 	for i, count := range g.cellCount {
-		if count <= Height {
+		if count < Height {
 			moves = append(moves, i)
 		} 
 	}
