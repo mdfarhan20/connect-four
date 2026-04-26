@@ -33,7 +33,7 @@ func FindBestMove(g Game) int {
 
 
 // Returns the utility value for a terminal game
-func utility(g Game) int {
+func utility(g *Game) int {
 	if g.winner == Red {
 		return 1
 	} else if g.winner == Yellow {
@@ -44,7 +44,7 @@ func utility(g Game) int {
 }
 
 // Returns if a game has ended or not
-func terminal(g Game) bool {
+func terminal(g *Game) bool {
 	return g.isDraw() || g.Winner() != Empty
 }
 
@@ -67,8 +67,8 @@ func actions(g Game) []int {
 func minimax(game Game, move int) int {
 	game.MakeMove(move)
 
-	if terminal(game) {
-		return utility(game)
+	if terminal(&game) {
+		return utility(&game)
 	}
 
 	var util int

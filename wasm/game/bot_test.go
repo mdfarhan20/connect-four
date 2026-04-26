@@ -61,7 +61,7 @@ func TestUtility(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game := CustomGameBoard(tt.board)
-			if got := utility(*game); got != tt.want {
+			if got := utility(game); got != tt.want {
 				t.Errorf("utility() = %d, want %d", got, tt.want)
 			}
 		})
