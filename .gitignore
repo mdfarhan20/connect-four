@@ -10,7 +10,7 @@ dist/
 *.local
 
 # IDE
-.vscode/settings.json
+.vscode/
 .idea/
 
 # OS
