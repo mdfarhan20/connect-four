@@ -78,6 +78,18 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
   - `makeBotMove()` - Computes and makes a bot move (returns Promise)
   - `resetGame()` - Resets the current game
 
+## UI Design System & Theme
+- **Design System**: Soft Play (`asset-stub-assets-4832b5f3762c414ba41873574216f659-1777211386496`)
+- **Aesthetic**: Soft minimalism with pillowy/tactile cues, desaturated tones to minimize eye strain.
+- **Color Palette**:
+  - Background & Surfaces: `#fff8f1` (warm off-white/cream) with a radial dot pattern grid (`24px` interval)
+  - Primary (Player 1 / Red): `#8c4e33` (sun-baked terracotta)
+  - Secondary (Player 2 / Yellow): `#416465` (dusty sage green)
+  - Tertiary (Accent/Meta): `#0d6969` (supportive deep teal)
+- **Typography**: **Plus Jakarta Sans** imported via Google Fonts.
+- **Elevation & Shapes**: Super-ellipses (`0.5rem` to `1.5rem` border-radius) for layout cards/buttons. Perfect circles for chips/board holes. Uses ambient/tinted diffused glows and board hole inset shadows.
+- **Interactions**: Tactile button presses (bottom-border offsets translating `2px` down on click) and smooth chip-drop bounce animations.
+
 ## Testing Conventions
 - **Test file location**: `wasm/game/` directory (same as source)
 - **Test file naming**: `<filename>_test.go`
