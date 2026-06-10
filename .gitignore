@@ -12,6 +12,7 @@ dist/
 # IDE
 .vscode/
 .idea/
+.antigravitycli/
 
 # OS
 .DS_Store
