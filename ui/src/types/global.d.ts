@@ -1,7 +1,12 @@
-export {};
+import type { GameResponse } from "./game";
+
+export { };
 
 declare global {
-  interface Window {
-    goAdd(a: number, b: number): number;
+  var Game: {
+    startGame: () => GameResponse;
+    makePlayerMove: (col: number) => GameResponse;
+    makeBotMove: () => Promise<GameResponse>;
+    resetGame: () => GameResponse;
   }
 }

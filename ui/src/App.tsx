@@ -1,26 +1,51 @@
-import { useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
+import { initializeWasm, wasm } from "./services/wasm_client";
 
 function App() {
+  const columnRef = useRef<HTMLInputElement | null>(null);
+
+  const [wasmLoaded, setWasmLoaded] = useState(false);
+
   useEffect(() => {
-    async function loadWasm() {
-      const go = new Go();
+    initializeWasm().then(() => {
+      setWasmLoaded(true);
+    });
+  }, []);
 
-      const result = await WebAssembly.instantiateStreaming(
-        fetch("/main.wasm"),
-        go.importObject,
-      );
+  const handleStartGame =  async () => {
+    console.log("Game Started", await wasm.startGame());
+  }
 
-      go.run(result.instance);
+  const handleMakeMove = async () => {
+    if (!columnRef.current) return;
+    console.log(`Move made: ${columnRef.current.value}`);
+    console.log(await wasm.makePlayerMove(Number(columnRef.current.value)))
+  }
 
-      console.log("WASM", window.goAdd(1, 20))
-    }
+  const handleBotMove = async () => {
+    console.log("Bot move", await wasm.makeBotMove());
+  }
 
-    loadWasm();
-  })
+  const handleReset = async () => {
+    console.log("Game reset", await wasm.resetGame());
+  }
+
+  if (!wasmLoaded) return <div>Loading Game Engine...</div>;
 
   return (
     <div>
       <h1>Connect Four</h1>
+
+      <button onClick={handleStartGame}>
+        Start Game
+      </button>
+
+      <input type="number" min={0} max={6} ref={columnRef} />
+      <button onClick={handleMakeMove}>Make move</button>
+
+      <button onClick={handleBotMove}>Make Bot move</button>
+
+      <button onClick={handleReset}>Reset game</button>
     </div>
   )
 }

@@ -127,7 +127,7 @@ func PrintBoard(g Game) {
 
 	if g.winner != Empty {
 		fmt.Printf("Winner: %s\n", cellToSymbol(g.winner))
-	} else if g.isDraw() {
+	} else if g.IsDraw() {
 		fmt.Println("Draw!")
 	} else {
 		fmt.Printf("Current player: %s\n", cellToSymbol(g.currentPlayer))

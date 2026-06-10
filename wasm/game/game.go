@@ -27,9 +27,13 @@ func (g Game) GetBoard() Board {
 	return g.board
 }
 
+func (g Game) GetPlayer() Cell {
+	return g.currentPlayer
+}
+
 
 func (g *Game) MakeMove(col int) error {
-	if g.winner != Empty || g.isDraw() {
+	if g.winner != Empty || g.IsDraw() {
 		return fmt.Errorf("cannot make move - game over")
 	}
 
@@ -57,6 +61,10 @@ func (g *Game) Winner() Cell {
 		return 0
 	}
 
+	if g.winner != Empty {
+		return g.winner
+	}
+
 	for i := Height - 1; i >= Height - g.maxCellHeight; i-- {
 		for j := 0; j < Width; j++ {
 			if g.board[i][j] == Empty {
@@ -78,7 +86,7 @@ func (g *Game) Winner() Cell {
 }
 
 
-func (g Game) isDraw() bool {
+func (g Game) IsDraw() bool {
 	if g.winner != Empty {
 		return false
 	}

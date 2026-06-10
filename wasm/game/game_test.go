@@ -109,7 +109,7 @@ func TestIsDraw(t *testing.T) {
 			{Red, Yellow, Red, Yellow, Red, Yellow, Red},
 		}
 		game := CustomGameBoard(board)
-		if !game.isDraw() {
+		if !game.IsDraw() {
 			t.Error("expected isDraw true for full board with no winner")
 		}
 	})

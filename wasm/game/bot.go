@@ -55,7 +55,7 @@ func utility(g *Game) int {
 
 // Returns if a game has ended or not
 func terminal(g *Game) bool {
-	return g.isDraw() || g.Winner() != Empty
+	return g.IsDraw() || g.Winner() != Empty
 }
 
 // Returns all possible moves
