@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import Loader from "./components/Loader/Loader";
 import { initializeWasm, wasm } from "./services/wasm_client";
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
     console.log("Game reset", await wasm.resetGame());
   }
 
-  if (!wasmLoaded) return <div>Loading Game Engine...</div>;
+  if (!wasmLoaded) return <Loader />;
 
   return (
     <div>
