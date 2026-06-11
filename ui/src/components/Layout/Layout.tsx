@@ -3,9 +3,11 @@ import "./Layout.css";
 
 type LayoutProps = {
   children: ReactNode;
+  status?: ReactNode;
+  actions?: ReactNode;
 };
 
-function Layout({ children }: LayoutProps) {
+function Layout({ children, status, actions }: LayoutProps) {
   return (
     <div className="app-shell">
       <header className="top-bar">
@@ -19,8 +21,10 @@ function Layout({ children }: LayoutProps) {
           <span>Connect Four</span>
         </a>
 
+        {status ? <div className="top-bar__status">{status}</div> : null}
+
         <div className="top-bar__meta">
-          <span className="status-badge status-badge-info">AI opponent</span>
+          {actions ?? <span className="status-badge status-badge-info">AI opponent</span>}
         </div>
       </header>
 

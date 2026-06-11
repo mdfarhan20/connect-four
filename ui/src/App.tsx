@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import HomeScreen from "./components/HomeScreen/HomeScreen";
+import GameScreen from "./components/GameScreen/GameScreen";
 import Layout from "./components/Layout/Layout";
 import Loader from "./components/Loader/Loader";
 import { initializeWasm } from "./services/wasm_client";
@@ -16,8 +16,16 @@ function App() {
   if (!wasmLoaded) return <Loader />;
 
   return (
-    <Layout>
-      <HomeScreen />
+    <Layout
+      status={<span className="status-badge status-badge-turn-red">Your turn</span>}
+      actions={
+        <>
+          <button className="top-bar__action" type="button">New game</button>
+          <button className="top-bar__action" type="button">Reset</button>
+        </>
+      }
+    >
+      <GameScreen />
     </Layout>
   )
 }
