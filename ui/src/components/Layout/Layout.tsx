@@ -3,28 +3,37 @@ import "./Layout.css";
 
 type LayoutProps = {
   children: ReactNode;
-  status?: ReactNode;
   actions?: ReactNode;
+  onHelp?: () => void;
+  onCode?: () => void;
 };
 
-function Layout({ children, status, actions }: LayoutProps) {
+function Layout({ children, actions, onHelp, onCode }: LayoutProps) {
   return (
     <div className="app-shell">
       <header className="top-bar">
-        <a className="top-bar__brand" href="/" aria-label="Connect Four home">
-          <span className="top-bar__mark" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-          </span>
-          <span>Connect Four</span>
-        </a>
+        <div className="top-bar__inner">
+          <span className="top-bar__title">Connect Four</span>
 
-        {status ? <div className="top-bar__status">{status}</div> : null}
-
-        <div className="top-bar__meta">
-          {actions ?? <span className="status-badge status-badge-info">AI opponent</span>}
+          <nav className="top-bar__actions">
+            {actions ?? (
+              <>
+                <button className="top-bar__icon-btn" type="button" aria-label="Help" onClick={onHelp}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <path d="M12 17h.01" />
+                  </svg>
+                </button>
+                <button className="top-bar__icon-btn" type="button" aria-label="Code" onClick={onCode}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </button>
+              </>
+            )}
+          </nav>
         </div>
       </header>
 

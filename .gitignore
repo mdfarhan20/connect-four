@@ -12,8 +12,11 @@ dist/
 # IDE
 .vscode/
 .idea/
+
+# AI
 .antigravitycli/
 .agents/
+opencode.json
 
 # OS
 .DS_Store
