@@ -27,8 +27,12 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
     - `wasm_exec.js` - Go standard WASM bridge runtime
   - `src/` - React application source code
     - `main.tsx` - React mount entry point
-    - `App.tsx` - Main React component and placeholder UI
+    - `App.tsx` - Main React component and screen composition after WASM loading
     - `index.css` - Global stylesheet
+    - `components/` - Reusable UI components
+      - `Loader/` - WASM loading state component with colocated CSS
+      - `Layout/` - Shared app shell and top bar used across screens
+      - `HomeScreen/` - Pre-game color selection screen
     - `constants/` - Game constants (`game.ts`)
     - `types/` - TypeScript type declarations
       - `game.ts` - Game data types (Cell, Board, Player)
@@ -89,6 +93,14 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
 - **Typography**: **Plus Jakarta Sans** imported via Google Fonts.
 - **Elevation & Shapes**: Super-ellipses (`0.5rem` to `1.5rem` border-radius) for layout cards/buttons. Perfect circles for chips/board holes. Uses ambient/tinted diffused glows and board hole inset shadows.
 - **Interactions**: Tactile button presses (bottom-border offsets translating `2px` down on click) and smooth chip-drop bounce animations.
+
+## Stitch UI Workflow
+- When a Stitch URL is provided for a screen, use the Stitch MCP tools to fetch the project and target screen before implementing the UI.
+- Parse the project ID from `/projects/{projectId}` and the screen instance ID from `node-id={screenInstanceId}`.
+- Use `get_project` to find the matching `screenInstances` entry, then call `get_screen` with that entry's `sourceScreen`.
+- Recreate the screen as React UI only. Do not wire gameplay behavior unless explicitly requested.
+- Keep reusable chrome such as the top bar in layout components, and colocate screen/component CSS with the component instead of growing `index.css`.
+- Preserve the WASM integration flow: show the loader while `initializeWasm()` resolves, then render the current UI screen.
 
 ## Testing Conventions
 - **Test file location**: `wasm/game/` directory (same as source)
