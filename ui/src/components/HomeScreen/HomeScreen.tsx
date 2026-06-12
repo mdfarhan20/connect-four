@@ -1,5 +1,5 @@
-import { useState } from "react";
 import "./HomeScreen.css";
+import type { Player } from "../../types/game";
 
 type PlayerColor = "red" | "yellow";
 
@@ -7,29 +7,37 @@ const colorOptions: Array<{
   color: PlayerColor;
   label: string;
   description: string;
+  value: Player;
 }> = [
   {
     color: "red",
     label: "Terracotta",
+    value: 1,
     description: "Play first with the warm red chips.",
   },
   {
     color: "yellow",
     label: "Sage",
+    value: 2,
     description: "Let the bot open while you play green.",
   },
 ];
 
-function HomeScreen() {
-  const [selectedColor, setSelectedColor] = useState<PlayerColor>("red");
+interface HomeScreenProps {
+  player: Player;
+  onPlayerChange: (player: Player) => void;
+  onGameStart: () => void;
+}
 
+function HomeScreen({ player, onPlayerChange, onGameStart }: HomeScreenProps) {
   return (
     <section className="home-screen" aria-labelledby="home-title">
       <div className="home-screen__intro">
         <span className="status-badge status-badge-info">New match</span>
         <h1 id="home-title">Choose your chip</h1>
         <p className="body-lg">
-          Pick the color you want to play as before starting a calm match against the bot.
+          Pick the color you want to play as before starting a calm match
+          against the bot.
         </p>
       </div>
 
@@ -54,18 +62,24 @@ function HomeScreen() {
         <div className="home-screen__controls">
           <div className="home-screen__label">
             <h2>Select player color</h2>
-            <p className="body-md">You can change this before the match begins.</p>
+            <p className="body-md">
+              You can change this before the match begins.
+            </p>
           </div>
 
-          <div className="home-screen__options" role="radiogroup" aria-label="Player color">
+          <div
+            className="home-screen__options"
+            role="radiogroup"
+            aria-label="Player color"
+          >
             {colorOptions.map((option) => (
               <button
                 key={option.color}
                 className={`color-option color-option--${option.color}`}
                 type="button"
                 role="radio"
-                aria-checked={selectedColor === option.color}
-                onClick={() => setSelectedColor(option.color)}
+                aria-checked={player === option.value}
+                onClick={() => onPlayerChange(option.value)}
               >
                 <span className="color-option__chip" aria-hidden="true" />
                 <span>
@@ -76,7 +90,11 @@ function HomeScreen() {
             ))}
           </div>
 
-          <button className="btn btn-primary home-screen__start" type="button">
+          <button
+            className="btn btn-primary home-screen__start"
+            type="button"
+            onClick={onGameStart}
+          >
             Start game
           </button>
         </div>
