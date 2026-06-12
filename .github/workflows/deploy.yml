@@ -1,0 +1,55 @@
+name: Deploy Connect Four App
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v5
+        with:
+          go-version: "1.23"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: ui/package-lock.json 
+      
+      - run: GOOS=js GOARCH=wasm go build -o ../ui/public/main.wasm
+        working-directory: wasm
+      
+      - run: cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" src/scripts/wasm_exec.js
+        working-directory: ui
+
+      - run: npm ci
+        working-directory: ui
+
+      - run: npm run build -- --base=/connect-four/
+        working-directory: ui
+      
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ui/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
