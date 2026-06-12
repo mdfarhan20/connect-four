@@ -32,7 +32,9 @@ jobs:
       - run: GOOS=js GOARCH=wasm go build -o ../ui/public/main.wasm
         working-directory: wasm
       
-      - run: cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" src/scripts/wasm_exec.js
+      - run: |
+          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" src/scripts/wasm_exec.js 2>/dev/null \
+            || cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" src/scripts/wasm_exec.js
         working-directory: ui
 
       - run: npm ci
