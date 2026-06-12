@@ -169,8 +169,7 @@ function HowToPlay({ onBack }: HowToPlayProps) {
           <p>Start a new game with a friend or the CPU.</p>
         </div>
         <div className="how-to-play__cta-actions">
-          <button className="btn btn-primary" type="button" onClick={onBack}>Play with CPU</button>
-          <button className="btn btn-outline" type="button" onClick={onBack}>Invite Friend</button>
+          <button className="btn btn-primary" type="button" onClick={onBack}>Play the Game</button>
         </div>
       </div>
     </section>
