@@ -9,7 +9,7 @@ const go = new Go();
 
 const wasmReady = (async () => {
   const result = await WebAssembly.instantiateStreaming(
-    fetch('/main.wasm'),
+    fetch(`${import.meta.env.BASE_URL}main.wasm`),
     go.importObject
   );
 
