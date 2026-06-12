@@ -17,7 +17,7 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
     - `utils.go` - Helper functions (board printer, board initialization)
     - `utils_test.go` - Tests for utility functions
 - `ui/` - React + Vite + TypeScript UI frontend
-  - `package.json` - Node dependencies (React 19, Vite 8, Comlink) and scripts (`dev`, `build`, `lint`, `preview`)
+  - `package.json` - Node dependencies (React 19, Vite 8, Comlink, react-hot-toast) and scripts (`dev`, `build`, `lint`, `preview`)
   - `index.html` - Application HTML entry point
   - `tsconfig.json` / `tsconfig.app.json` / `tsconfig.node.json` - TypeScript configuration
   - `vite.config.ts` - Vite configurations
@@ -27,15 +27,19 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
     - `wasm_exec.js` - Go standard WASM bridge runtime
   - `src/` - React application source code
     - `main.tsx` - React mount entry point
-    - `App.tsx` - Main React component and screen composition after WASM loading
-    - `index.css` - Global stylesheet
+    - `App.tsx` - Main React component, screen routing, WASM integration, error toast display, coin drop SFX
+    - `index.css` - Global stylesheet with design system CSS custom properties
+    - `assets/sound/` - Sound effect assets
+      - `coin-drop.wav` - Chip drop sound played on each move
     - `components/` - Reusable UI components
       - `Loader/` - WASM loading state component with colocated CSS
-      - `Layout/` - Shared app shell and top bar used across screens
+      - `Layout/` - Shared app shell with fixed top bar (Connect Four title, help icon, code icon)
       - `HomeScreen/` - Pre-game color selection screen
-    - `constants/` - Game constants (`game.ts`)
+      - `GameScreen/` - Game board, status card (turn indicator / bot thinking / game over), column buttons
+      - `HowToPlay/` - Rules and how-to-play page with bento grid layout
+    - `constants/` - Game constants (`game.ts` with CELLS, HEIGHT, WIDTH)
     - `types/` - TypeScript type declarations
-      - `game.ts` - Game data types (Cell, Board, Player)
+      - `game.ts` - Game data types (Cell, Board, Player, BoardState, GameResponse)
       - `global.d.ts` - Typing for global WASM methods under `globalThis.Game`
       - `wasm.ts` - Comlink-wrapped Web Worker API typings
       - `wasm_exec.d.ts` - Declarations for the Go WASM runtime class
@@ -82,7 +86,18 @@ Connect Four game with AI opponent using minimax algorithm, integrated with a Re
   - `makeBotMove()` - Computes and makes a bot move (returns Promise)
   - `resetGame()` - Resets the current game
 
-## UI Design System & Theme
+## Game Screen Data Flow
+- **`App.tsx`** manages all state: `gameState` (`BoardState`), `gameStarted`, `selectedPlayer`, `botThinking`, `moveLoading`
+- **`GameScreen`** receives a single `gameState: BoardState` prop (not individual fields) plus `moveLoading`, `botThinking`, `onPlayerMove`, `onResetGame`
+- **Status card** shows turn indicator, bot thinking state, or game over result (win/draw) inline — no modal overlay
+- **Coin drop SFX** (`coin-drop.wav`) plays via `Audio` element on every successful player or bot move
+- **Error toasts** use `react-hot-toast` (bottom-right, styled with error container colors)
+
+## Sound Effects
+- `coin-drop.wav` stored in `ui/src/assets/sound/`
+- Imported directly as a module path in `App.tsx`
+- Played via `useRef<HTMLAudioElement>` with `currentTime = 0` reset for rapid replays
+- Playback failures are silently caught (`.catch(() => {})`)
 - **Design System**: Soft Play (`asset-stub-assets-4832b5f3762c414ba41873574216f659-1777211386496`)
 - **Aesthetic**: Soft minimalism with pillowy/tactile cues, desaturated tones to minimize eye strain.
 - **Color Palette**:

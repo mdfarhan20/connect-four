@@ -1,94 +1,15 @@
 .game-screen {
   width: 100%;
   display: grid;
-  grid-template-areas:
-    "center"
-    "player"
-    "bot";
-  align-items: center;
+  grid-template-areas: "board" "status";
   gap: 24px;
+  align-items: start;
 }
 
-.game-screen__center {
-  grid-area: center;
+.game-screen__board {
+  grid-area: board;
   display: grid;
   justify-items: center;
-  gap: 18px;
-}
-
-.game-screen__heading {
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  text-align: center;
-}
-
-.game-screen__heading p {
-  color: var(--color-on-surface-variant);
-}
-
-.game-screen__side {
-  display: flex;
-}
-
-.game-screen__side--player {
-  grid-area: player;
-}
-
-.game-screen__side--bot {
-  grid-area: bot;
-}
-
-.game-player {
-  width: 100%;
-  min-height: 156px;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 8px;
-  padding: 18px;
-  border-radius: var(--rounded-xl);
-  border: 1px solid var(--color-surface-container-high);
-  background-color: var(--color-surface-container-lowest);
-  box-shadow: var(--shadow-sm);
-}
-
-.game-player--active {
-  border-color: var(--color-primary-container);
-  box-shadow: 0 16px 32px rgba(140, 78, 51, 0.1);
-}
-
-.game-player strong {
-  color: var(--color-on-surface);
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.game-player__chip {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--rounded-full);
-  box-shadow:
-    inset 0 3px 6px rgba(255, 255, 255, 0.4),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.15),
-    0 4px 8px rgba(51, 48, 43, 0.08);
-}
-
-.game-player__chip--red {
-  background: linear-gradient(180deg, var(--color-primary-container) 0%, var(--color-primary) 100%);
-  border: 1px solid #7c3e24;
-}
-
-.game-player__chip--yellow {
-  background: linear-gradient(180deg, var(--color-secondary-container) 0%, var(--color-secondary) 100%);
-  border: 1px solid #294c4d;
-}
-
-.game-player__score {
-  color: var(--color-on-surface);
-  font-size: 44px;
-  font-weight: 800;
-  line-height: 1;
 }
 
 .game-board-shell {
@@ -162,21 +83,166 @@
   border: 1px solid #294c4d;
 }
 
-@media (min-width: 760px) {
-  .game-screen {
-    grid-template-columns: minmax(132px, 0.26fr) minmax(420px, 1fr) minmax(132px, 0.26fr);
-    grid-template-areas: "player center bot";
-    gap: 28px;
-  }
-
-  .game-screen__side {
-    align-self: stretch;
-    align-items: center;
-  }
+/* Status card */
+.game-screen__status {
+  grid-area: status;
+  display: flex;
+  justify-content: center;
 }
 
-@media (min-width: 1080px) {
+.status-card {
+  width: min(100%, 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 32px 24px;
+  border-radius: var(--rounded-xl);
+  border: 1px solid var(--color-surface-container-high);
+  background-color: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card--active {
+  border-color: var(--color-primary-container);
+  box-shadow: 0 8px 24px rgba(140, 78, 51, 0.08);
+}
+
+.status-card--thinking {
+  border-color: var(--color-tertiary-container);
+  box-shadow: 0 8px 24px rgba(13, 105, 105, 0.08);
+}
+
+.status-card--over {
+  border-color: var(--color-outline-variant);
+}
+
+.status-card__indicator {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--rounded-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.status-card--active .status-card__indicator {
+  background-color: var(--color-primary-fixed);
+  color: var(--color-primary);
+}
+
+.status-card--thinking .status-card__indicator {
+  background-color: var(--color-tertiary-fixed);
+  color: var(--color-tertiary);
+}
+
+.status-card--over .status-card__indicator {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface-variant);
+}
+
+.status-card__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--rounded-full);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-card__dot--red {
+  background-color: var(--color-primary);
+}
+
+.status-card__dot--yellow {
+  background-color: var(--color-secondary);
+}
+
+.status-card__pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--rounded-full);
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+.status-card__dot--red .status-card__pulse {
+  background-color: var(--color-primary-container);
+}
+
+.status-card__dot--yellow .status-card__pulse {
+  background-color: var(--color-secondary-container);
+}
+
+@keyframes status-pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+.status-card__title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-on-surface);
+}
+
+.status-card--active .status-card__title {
+  color: var(--color-primary);
+}
+
+.status-card--thinking .status-card__title {
+  color: var(--color-tertiary);
+}
+
+.status-card__desc {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+}
+
+.status-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 32px;
+  border-radius: var(--rounded-md);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+  margin-top: 12px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-bottom: 4px solid #6c3c25;
+  box-shadow: 0 4px 6px rgba(140, 78, 51, 0.15);
+}
+
+.status-card__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(140, 78, 51, 0.25);
+  background-color: #9d5a3c;
+}
+
+.status-card__btn:active {
+  transform: translateY(2px);
+  border-bottom-width: 0px;
+  box-shadow: 0 2px 4px rgba(140, 78, 51, 0.1);
+  margin-bottom: 4px;
+}
+
+@media (min-width: 860px) {
   .game-screen {
-    gap: 36px;
+    grid-template-columns: 1fr minmax(260px, 320px);
+    grid-template-areas: "board status";
+    align-items: start;
+    gap: 32px;
   }
 }
